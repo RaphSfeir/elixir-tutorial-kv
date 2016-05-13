@@ -7,8 +7,8 @@ defmodule KV.Registry do
   Starts the registry.
   """
 
-  def start_link do
-    GenServer.start_link(__MODULE__, :ok, [])
+  def start_link(name) do
+    GenServer.start_link(__MODULE__, :ok, name: name) 
   end
 
   @doc """
@@ -42,7 +42,7 @@ defmodule KV.Registry do
     {:ok, {names, refs}}
   end
 
-  def handle_call({:lookup, name}, _from, names) do
+  def handle_call({:lookup, name}, _from, {names, _} = state) do
     {:reply, Map.fetch(names, name), names}
   end
 
